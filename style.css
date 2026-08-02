@@ -640,9 +640,9 @@ html, body {
    team-by-team boarding order list above it, but each entry is still
    tagged with its team so it's clear who they belong to. */
 .boarding-priority-box {
-  margin-top: 14px;
+  margin: 14px 0;
   padding: 12px 14px;
-  border-radius: 12px;
+  border-radius: 14px;
   background: #fff1c2;
   border: 2px solid #e8c34a;
 }

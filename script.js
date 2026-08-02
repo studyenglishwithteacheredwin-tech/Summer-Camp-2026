@@ -366,10 +366,13 @@ function boardingEntryHTML(entry) {
     </div>`;
 }
 
-// A single box per bus listing everyone (across all teams on that bus) who
-// needs to board first, each tagged with their team so it's still clear
-// which team they belong to.
+// A standalone box, shown BEFORE its bus's team-order card, listing
+// everyone (across all teams on that bus) who needs to board first — each
+// tagged with their team. Deliberately placed above the boarding-order
+// list so it never reads as "attached" to whichever team happens to be
+// listed 1st; boarding order and priority boarding are separate things.
 function busPriorityBoxHTML(busNum) {
+  const bus = CAMP.buses[busNum];
   const entries = busTeamsSorted(busNum);
   const rows = [];
   entries.forEach(({ team }) => {
@@ -378,7 +381,7 @@ function busPriorityBoxHTML(busNum) {
   if (rows.length === 0) return "";
   return `
     <div class="boarding-priority-box">
-      <div class="boarding-priority-box-heading">🥇 Boards First</div>
+      <div class="boarding-priority-box-heading">🥇 Boards First — Bus ${bus.number}</div>
       <ul class="boarding-priority-box-list">
         ${rows.map(r => `
           <li>
@@ -397,7 +400,6 @@ function busSectionHTML(busNum) {
     <div class="card">
       <h2>🚌 Bus ${bus.number} <span class="bus-cap">(${bus.capacity} seats — ${esc(bus.teacher)})</span></h2>
       ${entries.map(boardingEntryHTML).join("")}
-      ${busPriorityBoxHTML(busNum)}
     </div>`;
 }
 
@@ -405,7 +407,9 @@ function renderBoardingPage() {
   const root = $("#app");
   if (!root) return;
   root.innerHTML = `
+    ${busPriorityBoxHTML(1)}
     ${busSectionHTML(1)}
+    ${busPriorityBoxHTML(2)}
     ${busSectionHTML(2)}
     <div class="footnote">Board in this order. Anyone listed under "Boards First" should board before the rest of their team.</div>
     <a class="home-link" href="Summer Camp 2026.html">← Home</a>
