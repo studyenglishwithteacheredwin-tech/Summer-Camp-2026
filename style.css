@@ -511,6 +511,41 @@ html, body {
   color: var(--gray);
   margin-top: 2px;
 }
+.sched-reminder {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fff6e0;
+  border: 2px solid var(--yellow);
+  color: #5c4400;
+}
+.sched-reminder-heading {
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+.sched-reminder-intro {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.sched-reminder-subheading {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+}
+.sched-reminder-list {
+  margin: 0 0 6px 20px;
+  padding: 0;
+  font-size: 14px;
+}
+.sched-reminder-list li { margin: 2px 0; }
+.sched-reminder-note {
+  font-size: 13px;
+  font-weight: 700;
+}
 
 /* "(incl. Leader)" qualifier shown next to Total Travelling labels */
 .incl-leader-sub {

@@ -296,6 +296,19 @@ CAMP.schedule = [
     blocks: [
       { type: "title", text: "Rest" },
       { type: "note", text: "Nhà Cộng Đồng" },
+      {
+        type: "reminder",
+        heading: "🏠 Rest Period",
+        intro: "Only students and adults who intend to sleep or rest quietly should go to the Community House.",
+        subheading: "Before going upstairs, each Team Leader should:",
+        items: [
+          "Ask who would like to rest.",
+          "Explain that this area is for sleeping/resting only (no playing or making noise).",
+          "Count the number of people from their team who will be resting.",
+          "Report the final headcount to Eva.",
+        ],
+        note: "Eva will submit the final total to the venue.",
+      },
     ],
   },
   {

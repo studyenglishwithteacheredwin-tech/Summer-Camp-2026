@@ -646,6 +646,14 @@ function scheduleBlockHTML(block) {
       </div>`;
     case "note":
       return `<div class="sched-note">${esc(block.text)}</div>`;
+    case "reminder":
+      return `<div class="sched-reminder">
+        <div class="sched-reminder-heading">${esc(block.heading)}</div>
+        ${block.intro ? `<div class="sched-reminder-intro">${esc(block.intro)}</div>` : ""}
+        ${block.subheading ? `<div class="sched-reminder-subheading">${esc(block.subheading)}</div>` : ""}
+        ${block.items ? `<ul class="sched-reminder-list">${block.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul>` : ""}
+        ${block.note ? `<div class="sched-reminder-note">${esc(block.note)}</div>` : ""}
+      </div>`;
     default:
       return "";
   }
