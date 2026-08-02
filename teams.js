@@ -241,6 +241,13 @@ function campOverallTotals() {
   return { students, adults, teamMembers, total: students + adults + teamMembers };
 }
 
+/* ---------- Camp date ----------
+   The actual date camp runs. Used so the Schedule page only highlights a
+   "CURRENT ACTIVITY" when it's actually being viewed on camp day — not on
+   any other day whose clock time happens to match a schedule slot.
+   Format: "YYYY-MM-DD" (local date, no time component). ------------------ */
+CAMP.date = "2026-08-03"; // Monday, August 3, 2026
+
 /* ---------- Today's Schedule ----------
    Each entry: start/end in 24h "HH:MM" (end is null for a single point-in-time
    event like Check-in or Departure). `blocks` describes the card body as a

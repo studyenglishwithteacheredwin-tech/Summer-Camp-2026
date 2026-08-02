@@ -655,10 +655,26 @@ function scheduleTimeLabel(item) {
   return item.end ? `${item.start} – ${item.end}` : item.start;
 }
 
+// Local "YYYY-MM-DD" for a Date object, so it can be compared against
+// CAMP.date without timezone/UTC drift.
+function localDateStr(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function formatCampDate(dateStr) {
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  return date.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+}
+
 function renderSchedulePage() {
   const root = $("#app");
   const now = new Date();
-  const currentIdx = currentScheduleIndex(now.getHours() * 60 + now.getMinutes());
+  const isCampDay = !CAMP.date || localDateStr(now) === CAMP.date;
+  const currentIdx = isCampDay ? currentScheduleIndex(now.getHours() * 60 + now.getMinutes()) : -1;
 
   const cardsHTML = CAMP.schedule.map((item, i) => {
     const isCurrent = i === currentIdx;
@@ -672,7 +688,15 @@ function renderSchedulePage() {
       </div>`;
   }).join("");
 
+  const campDayNoticeHTML = (!isCampDay && CAMP.date)
+    ? `<div class="banner info">
+        <div class="banner-title">📅 Camp Day: ${esc(formatCampDate(CAMP.date))}</div>
+        <div>This is the plan for camp day. Nothing is marked "current" until that day.</div>
+      </div>`
+    : "";
+
   root.innerHTML = `
+    ${campDayNoticeHTML}
     <div class="timeline">${cardsHTML}</div>
 
     <div class="section-title">Important Reminders</div>
