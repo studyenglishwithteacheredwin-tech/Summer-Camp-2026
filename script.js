@@ -340,13 +340,81 @@ function renderTeamPage(teamNum) {
 }
 
 /* ============================================================
+   BUS BOARDING ORDER
+   Which team boards each bus first, and — within a team — which
+   students/adults need to board first (motion sickness, boarding with a
+   parent, etc). All data reused as-is from CAMP.teams (bus, boardingOrder,
+   busSplit, priorityBoarding) — nothing invented here.
+   ============================================================ */
+function busTeamsSorted(busNum) {
+  const entries = [];
+  CAMP.teams.forEach(team => {
+    if (team.bus === busNum) {
+      entries.push({ team, order: team.boardingOrder, splitNote: null });
+    } else if (team.bus === "split" && team.busSplit) {
+      const split = team.busSplit[busNum === 1 ? "bus1" : "bus2"];
+      if (split) entries.push({ team, order: split.order, splitNote: split.note });
+    }
+  });
+  entries.sort((a, b) => a.order - b.order);
+  return entries;
+}
+
+function boardingEntryHTML(entry) {
+  const { team, order, splitNote } = entry;
+  const priority = team.priorityBoarding || [];
+  const priorityHTML = priority.length
+    ? `<div class="boarding-priority">
+        <div class="boarding-priority-label">🥇 Boards First</div>
+        <ul class="boarding-priority-list">
+          ${priority.map(p => `<li>${esc(p.name)}${p.reason ? ` <span class="boarding-reason">— ${esc(p.reason)}</span>` : ""}</li>`).join("")}
+        </ul>
+      </div>`
+    : "";
+  return `
+    <div class="boarding-entry">
+      <div class="boarding-order-num">${ordinal(order)}</div>
+      <div class="boarding-entry-body">
+        <div class="boarding-team-line">TEAM ${team.num} <span class="boarding-leader">— ${esc(team.leader)}</span></div>
+        ${splitNote ? `<div class="boarding-split-note">${esc(splitNote)}</div>` : ""}
+        ${priorityHTML}
+      </div>
+    </div>`;
+}
+
+function busSectionHTML(busNum) {
+  const bus = CAMP.buses[busNum];
+  const entries = busTeamsSorted(busNum);
+  return `
+    <div class="card">
+      <h2>🚌 Bus ${bus.number} <span class="bus-cap">(${bus.capacity} seats — ${esc(bus.teacher)})</span></h2>
+      ${entries.map(boardingEntryHTML).join("")}
+    </div>`;
+}
+
+function renderBoardingPage() {
+  const root = $("#app");
+  if (!root) return;
+  root.innerHTML = `
+    ${busSectionHTML(1)}
+    ${busSectionHTML(2)}
+    <div class="footnote">Board in this order. Anyone tagged "Boards First" should board before the rest of their team.</div>
+    <a class="home-link" href="Summer Camp 2026.html">← Home</a>
+  `;
+}
+
+/* ============================================================
    HOME PAGE
    ============================================================ */
 function renderHomePage() {
   const root = $("#navGrid");
   if (!root) return;
 
-  // Schedule stays at the very top (quick reference for everyone).
+  // Bus Boarding Order is the very first button — which team boards
+  // which bus first, and who within a team boards first.
+  const boardingHTML = `<a class="nav-btn boarding" href="boarding.html">🚌 Bus Boarding Order<small>Which team — and who — boards first</small></a>`;
+
+  // Schedule stays near the top (quick reference for everyone).
   const scheduleHTML = `<a class="nav-btn schedule" href="schedule.html">📅 Today's Schedule<small>Quick reference — everyone</small></a>`;
 
   const teamButtonsHTML = CAMP.teams.map(team => `
@@ -363,7 +431,7 @@ function renderHomePage() {
     `<a class="nav-btn ${l.cls}" href="${l.href}">${esc(l.label)}<small>${esc(l.sub)}</small></a>`
   ).join("");
 
-  root.innerHTML = scheduleHTML + teamButtonsHTML + bottomHTML;
+  root.innerHTML = boardingHTML + scheduleHTML + teamButtonsHTML + bottomHTML;
 }
 
 /* ============================================================

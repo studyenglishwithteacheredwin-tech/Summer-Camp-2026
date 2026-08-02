@@ -111,6 +111,7 @@ html, body {
 .nav-btn.master { background: #0f5132; }
 .nav-btn.eva { background: #7a2e8e; }
 .nav-btn.schedule { background: #b45309; }
+.nav-btn.boarding { background: var(--blue); }
 .nav-btn small {
   display: block;
   font-size: 14px;
@@ -573,4 +574,76 @@ html, body {
   font-weight: 500;
   color: var(--gray);
   font-size: 14px;
+}
+
+/* ---------- Bus Boarding Order page ---------- */
+.bus-cap {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray);
+  text-transform: none;
+  letter-spacing: normal;
+}
+.boarding-entry {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+.boarding-entry:last-child { border-bottom: none; }
+.boarding-order-num {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.boarding-entry-body { min-width: 0; flex: 1; }
+.boarding-team-line {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--navy);
+}
+.boarding-leader {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray);
+}
+.boarding-split-note {
+  font-size: 13px;
+  color: var(--gray);
+  margin-top: 2px;
+}
+.boarding-priority {
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: #fff1c2;
+  border-radius: 10px;
+}
+.boarding-priority-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #7a5b00;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.boarding-priority-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #4a3900;
+}
+.boarding-priority-list li { padding: 1px 0; }
+.boarding-reason {
+  font-weight: 500;
+  color: #7a5b00;
 }
