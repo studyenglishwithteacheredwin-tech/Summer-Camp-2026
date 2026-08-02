@@ -274,8 +274,12 @@ function renderTeamPage(teamNum) {
     // TOTAL includes the Team Leader (always counted present on their own device).
     const totalPresent = sPresent + aPresent + 1;
     const totalOf = team.roster.length + team.adults.length + 1;
+    // The bar itself doubles as the "everyone here" signal — grey by
+    // default, turns green once every student and adult is checked. No
+    // separate light/button needed.
+    const allPresent = sPresent === team.roster.length && aPresent === team.adults.length;
     return `
-      <div class="totals-bar">
+      <div class="totals-bar ${allPresent ? "all-present" : ""}">
         <div class="stat-grid">
           <div class="stat"><div class="stat-label">Students</div><div class="stat-value">${sPresent} / ${team.roster.length}</div></div>
           <div class="stat"><div class="stat-label">Adults</div><div class="stat-value">${aPresent} / ${team.adults.length}</div></div>
@@ -285,10 +289,6 @@ function renderTeamPage(teamNum) {
   }
 
   function fullRender() {
-    const sPresentNow = countChecked(attendance.students);
-    const aPresentNow = countChecked(attendance.adults);
-    const allPresent = sPresentNow === team.roster.length && aPresentNow === team.adults.length;
-
     root.innerHTML = `
       ${team6TransportNoticeHTML(team)}
       ${summaryCardHTML()}
@@ -296,10 +296,6 @@ function renderTeamPage(teamNum) {
       <div class="section-title">Attendance</div>
       ${rosterListHTML()}
       ${adultsListHTML()}
-      <div class="everyone-light ${allPresent ? "lit" : "unlit"}" role="status">
-        <span class="light-dot"></span>
-        <span class="light-label">${allPresent ? "Everyone Here" : "Not Everyone Here Yet"}</span>
-      </div>
       <div class="btn-row">
         <button class="btn secondary" id="resetBtn">↺ Reset</button>
       </div>
@@ -317,11 +313,6 @@ function renderTeamPage(teamNum) {
         fullRender();
       });
     });
-
-    // "Everyone Here" is now a passive status light (not a button) — it only
-    // reflects whether every checkbox is already checked. It cannot be
-    // clicked to mark everyone present, so nobody can accidentally check
-    // the whole team in with one tap.
 
     const resetBtn = $("#resetBtn", root);
     if (resetBtn) {
@@ -360,25 +351,42 @@ function busTeamsSorted(busNum) {
   return entries;
 }
 
+// Team boarding order only — no priority-boarding info mixed in here.
+// Priority boarders for this bus are shown separately in their own box
+// (see busPriorityBoxHTML), tagged with which team they're from.
 function boardingEntryHTML(entry) {
   const { team, order, splitNote } = entry;
-  const priority = team.priorityBoarding || [];
-  const priorityHTML = priority.length
-    ? `<div class="boarding-priority">
-        <div class="boarding-priority-label">🥇 Boards First</div>
-        <ul class="boarding-priority-list">
-          ${priority.map(p => `<li>${esc(p.name)}${p.reason ? ` <span class="boarding-reason">— ${esc(p.reason)}</span>` : ""}</li>`).join("")}
-        </ul>
-      </div>`
-    : "";
   return `
     <div class="boarding-entry">
       <div class="boarding-order-num">${ordinal(order)}</div>
       <div class="boarding-entry-body">
         <div class="boarding-team-line">TEAM ${team.num} <span class="boarding-leader">— ${esc(team.leader)}</span></div>
         ${splitNote ? `<div class="boarding-split-note">${esc(splitNote)}</div>` : ""}
-        ${priorityHTML}
       </div>
+    </div>`;
+}
+
+// A single box per bus listing everyone (across all teams on that bus) who
+// needs to board first, each tagged with their team so it's still clear
+// which team they belong to.
+function busPriorityBoxHTML(busNum) {
+  const entries = busTeamsSorted(busNum);
+  const rows = [];
+  entries.forEach(({ team }) => {
+    (team.priorityBoarding || []).forEach(p => rows.push({ ...p, teamNum: team.num }));
+  });
+  if (rows.length === 0) return "";
+  return `
+    <div class="boarding-priority-box">
+      <div class="boarding-priority-box-heading">🥇 Boards First</div>
+      <ul class="boarding-priority-box-list">
+        ${rows.map(r => `
+          <li>
+            <span class="bp-name">${esc(r.name)}</span>
+            ${r.reason ? `<span class="bp-reason"> — ${esc(r.reason)}</span>` : ""}
+            <span class="bp-team">Team ${r.teamNum}</span>
+          </li>`).join("")}
+      </ul>
     </div>`;
 }
 
@@ -389,6 +397,7 @@ function busSectionHTML(busNum) {
     <div class="card">
       <h2>🚌 Bus ${bus.number} <span class="bus-cap">(${bus.capacity} seats — ${esc(bus.teacher)})</span></h2>
       ${entries.map(boardingEntryHTML).join("")}
+      ${busPriorityBoxHTML(busNum)}
     </div>`;
 }
 
@@ -398,7 +407,7 @@ function renderBoardingPage() {
   root.innerHTML = `
     ${busSectionHTML(1)}
     ${busSectionHTML(2)}
-    <div class="footnote">Board in this order. Anyone tagged "Boards First" should board before the rest of their team.</div>
+    <div class="footnote">Board in this order. Anyone listed under "Boards First" should board before the rest of their team.</div>
     <a class="home-link" href="Summer Camp 2026.html">← Home</a>
   `;
 }

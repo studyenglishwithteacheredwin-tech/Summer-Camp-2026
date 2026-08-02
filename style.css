@@ -303,41 +303,10 @@ html, body {
 .btn.secondary { background: var(--gray-light); color: #222; border: 2px solid var(--border); }
 .btn-row { margin: 16px 0; }
 
-/* "Everyone Here" status light — NOT a button, cannot be tapped. Purely
-   reflects whether every checkbox on this Team's page is already checked,
-   so nobody can accidentally mark the whole team present in one tap. */
-.everyone-light {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 14px;
-  margin: 16px 0;
-  border-radius: 12px;
-  border: 2px solid var(--border);
-  background: var(--gray-light);
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--gray);
-}
-.everyone-light .light-dot {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--border);
-  flex-shrink: 0;
-}
-.everyone-light.lit {
-  background: #e6f7ed;
-  border-color: var(--green);
-  color: #0f5132;
-}
-.everyone-light.lit .light-dot {
-  background: var(--green);
-  box-shadow: 0 0 8px rgba(0, 166, 81, 0.65);
-}
-
-/* ---------- Bottom totals ---------- */
+/* ---------- Bottom totals ----------
+   Doubles as the "everyone here" signal: grey by default, turns green
+   once every student and adult on this page is checked — no separate
+   light or button needed. */
 .totals-bar {
   position: sticky;
   bottom: 0;
@@ -345,7 +314,18 @@ html, body {
   border-top: 2px solid var(--border);
   padding: 6px 4px 4px;
   margin-top: 14px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
+.totals-bar.all-present {
+  background: #e6f7ed;
+  border-top: 2px solid var(--green);
+}
+.totals-bar.all-present .stat {
+  background: #cdeeda;
+}
+.totals-bar.all-present .stat-label { color: #0f5132; }
+.totals-bar.all-present .stat-value,
+.totals-bar.all-present .stat.total .stat-value { color: #0f5132; }
 
 /* ---------- Home link ---------- */
 .home-link {
@@ -656,29 +636,44 @@ html, body {
   color: var(--gray);
   margin-top: 2px;
 }
-.boarding-priority {
-  margin-top: 6px;
-  padding: 8px 10px;
+/* Separate "Boards First" box per bus — deliberately NOT mixed into the
+   team-by-team boarding order list above it, but each entry is still
+   tagged with its team so it's clear who they belong to. */
+.boarding-priority-box {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
   background: #fff1c2;
-  border-radius: 10px;
+  border: 2px solid #e8c34a;
 }
-.boarding-priority-label {
-  font-size: 12px;
-  font-weight: 800;
+.boarding-priority-box-heading {
+  font-size: 13px;
+  font-weight: 900;
   color: #7a5b00;
   text-transform: uppercase;
   letter-spacing: 0.02em;
+  margin-bottom: 6px;
 }
-.boarding-priority-list {
+.boarding-priority-box-list {
   list-style: none;
-  margin: 4px 0 0;
+  margin: 0;
   padding: 0;
   font-size: 14px;
-  font-weight: 700;
-  color: #4a3900;
 }
-.boarding-priority-list li { padding: 1px 0; }
-.boarding-reason {
-  font-weight: 500;
+.boarding-priority-box-list li {
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+.boarding-priority-box-list li:last-child { border-bottom: none; }
+.bp-name { font-weight: 800; color: #4a3900; }
+.bp-reason { font-weight: 500; color: #7a5b00; }
+.bp-team {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: 800;
   color: #7a5b00;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  padding: 1px 8px;
 }
