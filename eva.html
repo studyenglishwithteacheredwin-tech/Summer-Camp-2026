@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Eva — Summer Camp 2026</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Eva</h1>
+    <div class="subtitle">Camp Operations Manager</div>
+    <div class="clock" id="clock"></div>
+  </header>
+
+  <div class="page" id="app">
+    <!-- rendered by script.js -->
+  </div>
+
+  <script src="teams.js"></script>
+  <script src="script.js"></script>
+  <script>
+    startClock(document.getElementById("clock"));
+    renderEvaPage();
+  </script>
+</body>
+</html>

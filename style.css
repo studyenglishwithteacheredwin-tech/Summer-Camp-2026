@@ -1,0 +1,576 @@
+/* ============================================================
+   Summer Camp 2026 — LIVE ATTENDANCE
+   style.css — mobile-first, large touch targets, high contrast.
+   Designed to be readable and usable one-handed, while walking,
+   in bright outdoor light.
+   ============================================================ */
+
+:root {
+  --navy: #1f3864;
+  --navy-dark: #14264a;
+  --green: #00a651;
+  --yellow: #d99e00;
+  --red: #c00000;
+  --blue: #1f6fef;
+  --gray: #595959;
+  --gray-light: #f2f2f2;
+  --border: #cfcfcf;
+  --bg: #ffffff;
+  --touch: 56px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: #111;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.35;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px 16px 48px;
+}
+
+/* ---------- Header ---------- */
+.app-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 18px 16px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.app-header h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+}
+.app-header .subtitle {
+  margin-top: 4px;
+  font-size: 15px;
+  opacity: 0.9;
+  font-weight: 600;
+}
+.app-header .clock {
+  margin-top: 6px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Team page's sticky header — deliberately tiny on mobile (target: no
+   more than ~20% of screen height). Just 3 short lines. */
+#teamHeader.app-header {
+  padding: 8px 14px 6px;
+}
+.team-id-compact { text-align: center; }
+.team-id-compact .team-number-sm {
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+.team-id-compact .team-leader-sm {
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+.team-id-compact .team-bus-sm {
+  font-size: 16px;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+/* ---------- Big nav buttons (home page) ---------- */
+.nav-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 20px;
+}
+.nav-btn {
+  display: block;
+  width: 100%;
+  padding: 22px 18px;
+  font-size: 22px;
+  font-weight: 800;
+  text-align: left;
+  color: #fff;
+  background: var(--navy);
+  border: none;
+  border-radius: 14px;
+  text-decoration: none;
+  min-height: var(--touch);
+}
+.nav-btn.master { background: #0f5132; }
+.nav-btn.eva { background: #7a2e8e; }
+.nav-btn.schedule { background: #b45309; }
+.nav-btn small {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin: 14px 0;
+}
+.card h2 {
+  margin: 0 0 10px;
+  font-size: 21px;
+  color: var(--navy);
+  font-weight: 800;
+}
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 17px;
+}
+.card-row:last-child { border-bottom: none; }
+.card-row .label { color: var(--gray); font-weight: 600; }
+.card-row .value { font-weight: 800; text-align: right; }
+
+/* ---------- Summary stat grid (kept small: the totals bar is sticky
+   and must stay under ~10% of screen height on mobile) ---------- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 4px 0;
+}
+.stat {
+  background: var(--gray-light);
+  border-radius: 10px;
+  text-align: center;
+  padding: 6px 4px;
+}
+.stat .stat-label {
+  font-size: 10px;
+  color: var(--gray);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.stat .stat-value {
+  font-size: 17px;
+  font-weight: 900;
+  margin-top: 1px;
+}
+.stat.total .stat-value { color: var(--navy); }
+
+/* ---------- Swim summary chips ---------- */
+.swim-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 4px;
+}
+.swim-chip {
+  background: var(--gray-light);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ---------- Banners ---------- */
+.banner {
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  font-size: 16px;
+}
+.banner.alert {
+  background: #fdecea;
+  border: 2px solid var(--red);
+  color: #7a0000;
+}
+.banner.alert .banner-title {
+  font-size: 18px;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+.banner.info {
+  background: #eef3ff;
+  border: 2px solid var(--blue);
+  color: #12306b;
+}
+.banner.warn {
+  background: #fff6e0;
+  border: 2px solid var(--yellow);
+  color: #5c4400;
+}
+.banner .chain {
+  font-weight: 800;
+  margin-top: 6px;
+}
+.banner ul, .banner ol {
+  margin: 6px 0 0 20px;
+  padding: 0;
+}
+.banner li { margin: 3px 0; }
+
+/* ---------- Section titles ---------- */
+.section-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--navy);
+  margin: 22px 0 8px;
+}
+
+/* ---------- Attendance list ---------- */
+.roster-list { list-style: none; margin: 0; padding: 0; }
+.roster-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 8px;
+  border-bottom: 1px solid #eee;
+  min-height: var(--touch);
+}
+.roster-item:last-child { border-bottom: none; }
+.roster-item.checked { background: #f4fbf6; }
+
+.big-checkbox {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--navy);
+  border-radius: 8px;
+  accent-color: var(--navy);
+}
+
+.roster-info { flex: 1 1 auto; min-width: 0; }
+.roster-name {
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.roster-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 3px;
+  align-items: center;
+}
+.status-badge {
+  font-size: 15px;
+  font-weight: 800;
+}
+.status-tag {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray);
+}
+.roster-note {
+  font-size: 13px;
+  color: var(--gray);
+  margin-top: 2px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: 16px;
+  font-size: 19px;
+  font-weight: 800;
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  min-height: var(--touch);
+}
+.btn.primary { background: var(--green); color: #fff; }
+.btn.secondary { background: var(--gray-light); color: #222; border: 2px solid var(--border); }
+.btn-row { margin: 16px 0; }
+
+/* "Everyone Here" status light — NOT a button, cannot be tapped. Purely
+   reflects whether every checkbox on this Team's page is already checked,
+   so nobody can accidentally mark the whole team present in one tap. */
+.everyone-light {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  margin: 16px 0;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  background: var(--gray-light);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--gray);
+}
+.everyone-light .light-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+}
+.everyone-light.lit {
+  background: #e6f7ed;
+  border-color: var(--green);
+  color: #0f5132;
+}
+.everyone-light.lit .light-dot {
+  background: var(--green);
+  box-shadow: 0 0 8px rgba(0, 166, 81, 0.65);
+}
+
+/* ---------- Bottom totals ---------- */
+.totals-bar {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  border-top: 2px solid var(--border);
+  padding: 6px 4px 4px;
+  margin-top: 14px;
+}
+
+/* ---------- Home link ---------- */
+.home-link {
+  display: block;
+  text-align: center;
+  margin: 20px 0 0;
+  color: var(--gray);
+  font-size: 15px;
+  text-decoration: none;
+}
+
+/* ---------- Divider ---------- */
+.divider { border: none; border-top: 1px solid #eee; margin: 14px 0; }
+
+/* ---------- Small print / footnote ---------- */
+.footnote {
+  font-size: 12px;
+  color: #999;
+  margin-top: 10px;
+  text-align: center;
+}
+
+@media (min-width: 480px) {
+  body { font-size: 19px; }
+}
+
+/* ---------- Refinement additions: Team Number identity, stacked rows ---------- */
+
+.team-id-block { text-align: center; }
+.team-id-block .team-number {
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+.team-id-block .team-leader-line {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 2px;
+  opacity: 0.95;
+}
+.team-id-block .team-meta-line {
+  font-size: 18px;
+  font-weight: 700;
+  opacity: 1;
+  margin-top: 6px;
+  line-height: 1.3;
+}
+
+/* The Team page's sticky header (#teamHeader) is a plain white card, not
+   the dark navy app-header, so the boarding order / bus info stays easy
+   to find and read at a glance while scrolling. */
+#teamHeader.app-header {
+  background: #fff;
+  color: #111;
+  border-bottom: 3px solid var(--navy);
+}
+#teamHeader .team-number-sm { color: var(--navy); }
+#teamHeader .team-leader-sm { color: #222; }
+#teamHeader .team-bus-sm { color: var(--blue); }
+
+/* Home page buttons: same identity block, left-aligned, on dark button bg */
+.nav-btn .team-number { font-size: 26px; font-weight: 900; }
+.nav-btn .team-leader-line { font-size: 15px; font-weight: 700; margin-top: 2px; }
+.nav-btn .team-meta-line { font-size: 14px; font-weight: 600; opacity: 0.9; margin-top: 3px; }
+.nav-btn .incl-leader { font-size: 12px; font-weight: 500; opacity: 0.8; }
+
+/* Master dashboard card header */
+.card-id-header { margin-bottom: 10px; }
+.card-id-header .team-number { font-size: 24px; font-weight: 900; color: var(--navy); }
+.card-id-header .team-leader-line { font-size: 15px; font-weight: 700; color: var(--gray); margin-top: 2px; }
+
+/* A card-row that stacks label above value instead of side-by-side
+   (used for the Adults line, which can be a multi-item bullet list) */
+.card-row-stacked {
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 17px;
+}
+.card-row-stacked:last-child { border-bottom: none; }
+.card-row-stacked .label { color: var(--gray); font-weight: 600; display: block; }
+.card-row-stacked .value { font-weight: 800; margin-top: 3px; }
+.adults-summary-list {
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+}
+.adults-summary-list li::before { content: "• "; }
+.adults-summary-list li { padding: 1px 0; }
+
+/* ---------- Today's Schedule: timeline cards ---------- */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 12px;
+}
+.timeline-item {
+  border: 2px solid var(--border);
+  border-left: 8px solid var(--navy);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: #fff;
+}
+.timeline-item.current {
+  border-left-color: var(--green);
+  background: #f4fbf6;
+  border-color: var(--green);
+}
+.current-badge {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f5132;
+  background: #d9f2e3;
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-bottom: 8px;
+}
+.timeline-time {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.timeline-item.current .timeline-time { color: #0f5132; }
+.sched-title {
+  font-size: 19px;
+  font-weight: 800;
+  margin: 2px 0;
+}
+.sched-activity {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 2px 0;
+}
+.sched-group {
+  font-size: 17px;
+  margin: 4px 0;
+}
+.sched-group-label {
+  display: inline-block;
+  font-weight: 800;
+  color: var(--gray);
+  margin-right: 8px;
+}
+.sched-shared {
+  margin-top: 6px;
+  font-size: 16px;
+}
+.sched-shared-heading {
+  font-weight: 700;
+  color: var(--gray);
+  margin-bottom: 2px;
+}
+.sched-shared ul {
+  margin: 0 0 0 20px;
+  padding: 0;
+}
+.sched-shared li { margin: 2px 0; }
+.sched-note {
+  font-size: 16px;
+  color: var(--gray);
+  margin-top: 2px;
+}
+
+/* "(incl. Leader)" qualifier shown next to Total Travelling labels */
+.incl-leader-sub {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gray);
+  text-transform: none;
+}
+.incl-leader-tiny {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* Master Dashboard: full student/adult roster lists per team card */
+.section-title-mini {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 12px 0 4px;
+}
+.roster-mini-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.roster-mini-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 15px;
+}
+.roster-mini-list li:last-child { border-bottom: none; }
+.roster-mini-name {
+  font-weight: 700;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+.roster-mini-status {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: 18px;
+  line-height: 1;
+}
+.status-dot { line-height: 1; }
+.priority-tag {
+  font-size: 11px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+.priority-none {
+  font-weight: 500;
+  color: var(--gray);
+  font-size: 14px;
+}
